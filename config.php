@@ -1,4 +1,5 @@
 <?php 
+//tes edit
 $con = mysqli_connect('localhost', 'root', '','pelayanan_pln');
 
 if(mysqli_connect_errno()){
