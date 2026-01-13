@@ -37,6 +37,7 @@ body {
       rgba(255, 255, 255, 0.75)
     ),
     url("assets/img/pln.jpg") no-repeat center center fixed;
+  background-size:cover ;
 }
 
 /* Card login dibuat sedikit transparan */
