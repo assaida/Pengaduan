@@ -92,6 +92,61 @@
             </tbody>
             <?php } ?>
           </table>
+          <br><br><br>
+
+<table class="table"><h1>Riwayat Pengaduan</h1>
+</div>
+
+<section class="section">
+<div class="card">
+<div class="card-body">
+
+<table class="table">
+<thead>
+<tr>
+  <th>No</th>
+  <th>Pengaduan</th>
+  <th>Status</th>
+  <th>Balasan Admin</th>
+  <th>Teknisi</th>
+</tr>
+</thead>
+
+<tbody>
+<?php
+$q = mysqli_query($con,"
+  SELECT * FROM pengaduan
+  WHERE nama = '$username'
+  ORDER BY id DESC
+");
+
+$no=1;
+while($row=mysqli_fetch_array($q)){
+?>
+<tr>
+  <td><?= $no++ ?></td>
+  <td><?= htmlspecialchars($row['pengaduan']) ?></td>
+  <td>
+    <?php
+      if($row['status']=='MENUNGGU') echo '<span class="badge bg-warning">Menunggu</span>';
+      elseif($row['status']=='PROSES_TEKNISI') echo '<span class="badge bg-info">Diproses</span>';
+      elseif($row['status']=='SELESAI_ADMIN') echo '<span class="badge bg-success">Selesai</span>';
+    ?>
+  </td>
+  <td><?= $row['keterangan_admin'] ?: '<i>Belum ada</i>' ?></td>
+  <td><?= $row['teknisi'] ?: '-' ?></td>
+</tr>
+<?php } ?>
+
+<?php if(mysqli_num_rows($q)==0){ ?>
+<tr>
+  <td colspan="5" class="text-center">Belum ada pengaduan</td>
+</tr>
+<?php } ?>
+</tbody>
+</table>
+
+
           <!-- End Table with stripped rows -->
               <br><br><br>
         </div>

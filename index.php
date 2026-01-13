@@ -30,9 +30,23 @@
 </head>
 <style>
 body {
-  background-color:#FFC300;
+  min-height: 100vh;
+  background: 
+    linear-gradient(
+      rgba(255, 255, 255, 0.75),
+      rgba(255, 255, 255, 0.75)
+    ),
+    url("assets/img/pln.jpg") no-repeat center center fixed;
+}
+
+/* Card login dibuat sedikit transparan */
+.card {
+  background: rgba(255, 255, 255, 0.95);
+  border-radius: 12px;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.15);
 }
 </style>
+
 <body>
 
   <main>

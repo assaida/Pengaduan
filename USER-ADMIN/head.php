@@ -36,6 +36,52 @@
   * License: https://bootstrapmade.com/license/
   ======================================================== -->
 </head>
+<style>
+/* ===== SIDEBAR PLN THEME ===== */
+#sidebar.sidebar {
+  background: rgba(0, 74, 173, 0.9) !important; /* Biru PLN transparan */
+  backdrop-filter: blur(6px); /* efek glass (opsional) */
+}
+
+/* Heading */
+#sidebar .nav-heading {
+  color: rgba(255, 255, 255, 0.75) !important;
+}
+
+/* Menu link */
+#sidebar .nav-link {
+  color: #ffffff !important;
+  background: transparent !important;
+  border-radius: 8px;
+}
+
+/* Icon */
+#sidebar .nav-link i {
+  color: #e6f0ff !important;
+}
+
+/* Hover */
+#sidebar .nav-link:hover {
+  background: rgba(255, 255, 255, 0.18) !important;
+}
+
+/* Active */
+#sidebar .nav-link:not(.collapsed) {
+  background: rgba(255, 255, 255, 0.28) !important;
+  font-weight: 600;
+}
+
+/* Submenu */
+#sidebar .nav-content a {
+  color: #f0f6ff !important;
+  border-radius: 6px;
+}
+
+/* Submenu hover */
+#sidebar .nav-content a:hover {
+  background: rgba(255, 255, 255, 0.18) !important;
+}
+</style>
 
 <body>
 <?php session_start(); ?>
