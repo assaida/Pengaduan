@@ -2,7 +2,12 @@
 include '../config.php';
 include 'head.php';
 
+if ($_SESSION['level'] != 'ADMIN') {
+  die('Akses ditolak');
+}
+
 $id = $_GET['id'];
+
 $data = mysqli_fetch_array(
   mysqli_query($con,"SELECT * FROM pengaduan WHERE id='$id'")
 );
@@ -25,6 +30,11 @@ $qt = mysqli_query($con,"SELECT * FROM user WHERE level='TEKNISI'");
 <form method="post">
 
 <div class="mb-3">
+  <label>Nama Pelapor</label>
+  <input type="text" class="form-control" value="<?= $data['nama'] ?>" readonly>
+</div>
+
+<div class="mb-3">
   <label>Isi Pengaduan</label>
   <textarea class="form-control" rows="3" readonly><?= $data['pengaduan'] ?></textarea>
 </div>
@@ -32,39 +42,39 @@ $qt = mysqli_query($con,"SELECT * FROM user WHERE level='TEKNISI'");
 <div class="mb-3">
   <label>Status</label>
   <select name="status" id="status" class="form-control" onchange="aturForm()" required>
-    <option value="MENUNGGU" <?= $data['status']=='MENUNGGU'?'selected':'' ?>>Menunggu</option>
+    <option value="MENUNGGU" <?= $data['status']=='MENUNGGU'?'selected':'' ?>>
+      Menunggu
+    </option>
 
-    <?php if($data['teknisi']==NULL){ ?>
-      <option value="SELESAI_ADMIN" <?= $data['status']=='SELESAI_ADMIN'?'selected':'' ?>>
-        Selesai Admin
-      </option>
-    <?php } ?>
+    <option value="SELESAI_ADMIN" <?= $data['status']=='SELESAI_ADMIN'?'selected':'' ?>>
+      Balas / Selesai oleh Admin
+    </option>
 
     <option value="PROSES_TEKNISI" <?= $data['status']=='PROSES_TEKNISI'?'selected':'' ?>>
-      Proses Teknisi
+      Proses ke Teknisi
     </option>
   </select>
 </div>
-<div class="mb-3" id="formAdmin" style="display:none;">
-  <label>Catatan Admin</label>
+
+<div class="mb-3" id="formAdmin">
+  <label>Balasan Admin</label>
   <textarea name="keterangan_admin" class="form-control" rows="3">
 <?= $data['keterangan_admin'] ?>
   </textarea>
 </div>
 
-<div class="mb-3" id="formTeknisi" style="display:none;">
-  <label>Teknisi</label>
+<div class="mb-3" id="formTeknisi">
+  <label>Pilih Teknisi</label>
   <select name="teknisi" class="form-control">
     <option value="">-- Pilih Teknisi --</option>
     <?php while($t=mysqli_fetch_array($qt)){ ?>
-      <option value="<?= $t['id'] ?>"
-        <?= $data['teknisi']==$t['id']?'selected':'' ?>>
+      <option value="<?= $t['username'] ?>"
+        <?= $data['teknisi']==$t['username']?'selected':'' ?>>
         <?= $t['nama'] ?>
       </option>
     <?php } ?>
   </select>
 </div>
-
 
 <button name="update" class="btn btn-primary">Update</button>
 <a href="pengaduan.php" class="btn btn-secondary">Kembali</a>
@@ -78,15 +88,14 @@ $qt = mysqli_query($con,"SELECT * FROM user WHERE level='TEKNISI'");
 </div>
 </section>
 </main>
+
 <script>
 function aturForm(){
   let status = document.getElementById('status').value;
 
-  // sembunyikan semua dulu
   document.getElementById('formAdmin').style.display   = 'none';
   document.getElementById('formTeknisi').style.display = 'none';
 
-  // tampilkan sesuai status
   if(status === 'SELESAI_ADMIN'){
     document.getElementById('formAdmin').style.display = 'block';
   }
@@ -96,7 +105,6 @@ function aturForm(){
   }
 }
 
-// jalankan saat halaman pertama kali dibuka
 aturForm();
 </script>
 
@@ -104,8 +112,9 @@ aturForm();
 if(isset($_POST['update'])){
   $status = $_POST['status'];
   $ket    = $_POST['keterangan_admin'] ?? NULL;
-  $tek  = $_POST['teknisi'] ?? NULL;
+  $tek    = $_POST['teknisi'] ?? NULL;
 
+  // logika bersih
   if($status == 'SELESAI_ADMIN'){
     $tek = NULL;
   }
@@ -119,14 +128,14 @@ if(isset($_POST['update'])){
       status='$status',
       keterangan_admin=".($ket?"'$ket'":"NULL").",
       teknisi=".($tek?"'$tek'":"NULL")."
+    WHERE id='$id'
   ");
 
   echo "<script>
-    alert('Data berhasil diupdate');
+    alert('Pengaduan berhasil diperbarui');
     location='pengaduan.php';
   </script>";
 }
-
 
 include 'foot.php';
 ?>
